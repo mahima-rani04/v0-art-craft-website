@@ -217,7 +217,7 @@ export function HeroSection() {
               rotate={-3}
             >
               <div className="glass-strong rounded-3xl p-2 shadow-2xl shadow-foreground/5">
-                <div className="relative w-[220px] sm:w-[280px] h-[293px] sm:h-[373px] rounded-2xl overflow-hidden bg-gradient-to-br from-gradient-start/10 to-gradient-mid/10">
+                <div className="relative w-[220px] sm:w-[280px] aspect-[3/4] rounded-2xl overflow-hidden bg-gradient-to-br from-gradient-start/10 to-gradient-mid/10">
                   <Image
                     src="https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=600&q=80"
                     alt="Premium watercolor set"
@@ -241,7 +241,7 @@ export function HeroSection() {
               rotate={6}
             >
               <div className="glass rounded-2xl p-2 shadow-xl">
-                <div className="relative w-[140px] sm:w-[160px] h-[140px] sm:h-[160px] rounded-xl overflow-hidden bg-gradient-to-br from-gradient-mid/10 to-gradient-end/10">
+                <div className="relative w-[140px] sm:w-[160px] aspect-square rounded-xl overflow-hidden bg-gradient-to-br from-gradient-mid/10 to-gradient-end/10">
                   <Image
                     src="https://images.unsplash.com/photo-1596484552834-6a58f850e0a1?w=400&q=80"
                     alt="Premium brushes"
@@ -264,7 +264,7 @@ export function HeroSection() {
               rotate={-8}
             >
               <div className="glass rounded-2xl p-2 shadow-xl">
-                <div className="relative w-[130px] sm:w-[150px] h-[162px] sm:h-[187px] rounded-xl overflow-hidden bg-gradient-to-br from-gradient-end/10 to-gradient-start/10">
+                <div className="relative w-[130px] sm:w-[150px] aspect-[4/5] rounded-xl overflow-hidden bg-gradient-to-br from-gradient-end/10 to-gradient-start/10">
                   <Image
                     src="https://images.unsplash.com/photo-1452860606245-08befc0ff44b?w=400&q=80"
                     alt="Sketch pencils"
