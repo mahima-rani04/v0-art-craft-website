@@ -1,7 +1,6 @@
 "use client"
 
-import { useRef } from "react"
-import { motion, useScroll, useTransform, useMotionValue, useSpring } from "framer-motion"
+import { motion, useMotionValue, useSpring, useTransform } from "framer-motion"
 import { ArrowRight, Palette, Brush, Pencil } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
@@ -38,15 +37,6 @@ function FloatingElement({
 }
 
 export function HeroSection() {
-  const containerRef = useRef<HTMLDivElement>(null)
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end start"],
-  })
-
-  const y = useTransform(scrollYProgress, [0, 1], [0, 200])
-  const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0])
-
   const mouseX = useMotionValue(0)
   const mouseY = useMotionValue(0)
 
@@ -64,27 +54,38 @@ export function HeroSection() {
 
   return (
     <section
-      ref={containerRef}
       className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20"
       onMouseMove={handleMouseMove}
     >
       {/* Background Gradient Orbs */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <motion.div
-          style={{ y }}
+          animate={{ 
+            y: [0, 20, 0],
+            scale: [1, 1.05, 1]
+          }}
+          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
           className="absolute top-1/4 -left-32 w-96 h-96 rounded-full bg-gradient-start/20 blur-3xl"
         />
         <motion.div
-          style={{ y: useTransform(scrollYProgress, [0, 1], [0, 150]) }}
+          animate={{ 
+            y: [0, -15, 0],
+            scale: [1, 1.03, 1]
+          }}
+          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
           className="absolute top-1/3 -right-32 w-96 h-96 rounded-full bg-gradient-mid/20 blur-3xl"
         />
         <motion.div
-          style={{ y: useTransform(scrollYProgress, [0, 1], [0, 100]) }}
+          animate={{ 
+            y: [0, 25, 0],
+            scale: [1, 1.04, 1]
+          }}
+          transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
           className="absolute bottom-1/4 left-1/3 w-64 h-64 rounded-full bg-gradient-end/15 blur-3xl"
         />
       </div>
 
-      <motion.div style={{ opacity }} className="container mx-auto px-6 relative z-10">
+      <div className="container mx-auto px-6 relative z-10">
         <div className="max-w-5xl mx-auto text-center">
           {/* Floating Elements */}
           <div className="absolute inset-0 pointer-events-none">
@@ -209,7 +210,7 @@ export function HeroSection() {
             </motion.div>
           </motion.div>
         </div>
-      </motion.div>
+      </div>
     </section>
   )
 }
