@@ -2,7 +2,7 @@
 
 import { useRef } from "react"
 import { motion, useInView } from "framer-motion"
-import { ShoppingBag, Star, ArrowRight } from "lucide-react"
+import { ShoppingCart, Star } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
 const products = [
@@ -60,6 +60,24 @@ const products = [
     image: "https://images.unsplash.com/photo-1615715616181-6ba85d724137?w=400&h=400&fit=crop",
     category: "Painting",
   },
+  {
+    id: 7,
+    name: "Mixed Media Sketchbook",
+    price: 29.99,
+    rating: 4.7,
+    reviews: 145,
+    image: "https://images.unsplash.com/photo-1517697471339-4aa32003c11a?w=400&h=400&fit=crop",
+    category: "Paper",
+  },
+  {
+    id: 8,
+    name: "Craft Supplies Kit",
+    price: 54.99,
+    rating: 4.6,
+    reviews: 98,
+    image: "https://images.unsplash.com/photo-1452860606245-08befc0ff44b?w=400&h=400&fit=crop",
+    category: "DIY",
+  },
 ]
 
 function ProductCard({
@@ -71,64 +89,76 @@ function ProductCard({
 }) {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 40 }}
-      whileInView={{ opacity: 1, y: 0 }}
+      initial={{ opacity: 0, y: 50, scale: 0.9 }}
+      whileInView={{ opacity: 1, y: 0, scale: 1 }}
       viewport={{ once: true, margin: "-50px" }}
-      transition={{ duration: 0.8, delay: index * 0.08, ease: [0.16, 1, 0.3, 1] }}
-      className="flex-shrink-0 w-[280px] md:w-[320px]"
+      transition={{ duration: 0.6, delay: index * 0.1, ease: [0.23, 1, 0.32, 1] }}
+      className="flex-shrink-0 w-72 md:w-80"
     >
       <motion.div
-        whileHover={{ y: -8 }}
-        transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-        className="group relative bg-card rounded-2xl border border-border/50 overflow-hidden"
+        whileHover={{ y: -12, scale: 1.02 }}
+        transition={{ duration: 0.3, ease: "easeOut" }}
+        className="group relative"
       >
-        {/* Image */}
-        <div className="relative h-64 overflow-hidden">
-          <motion.img
-            src={product.image}
-            alt={product.name}
-            className="w-full h-full object-cover"
-            whileHover={{ scale: 1.05 }}
-            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-          />
-          
-          {/* Category Badge */}
-          <span className="absolute top-4 left-4 px-3 py-1.5 text-xs font-medium bg-background/90 backdrop-blur-sm rounded-full">
-            {product.category}
-          </span>
-
-          {/* Add to Cart - appears on hover */}
-          <motion.div
-            className="absolute bottom-4 left-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-          >
-            <Button 
-              className="w-full rounded-full bg-foreground text-background hover:bg-foreground/90 gap-2"
-              size="sm"
-            >
-              <ShoppingBag className="w-4 h-4" />
-              Add to Cart
-            </Button>
-          </motion.div>
-        </div>
-
-        {/* Content */}
-        <div className="p-5">
-          <div className="flex items-center gap-1.5 mb-2">
-            <Star className="w-4 h-4 fill-amber-400 text-amber-400" />
-            <span className="text-sm font-medium">{product.rating}</span>
-            <span className="text-sm text-muted-foreground">({product.reviews})</span>
-          </div>
-          <h3 className="font-medium mb-3 line-clamp-1">{product.name}</h3>
-          <div className="flex items-center justify-between">
-            <span className="text-xl font-semibold">${product.price}</span>
-            <motion.button
+        {/* Gradient glow on hover */}
+        <motion.div 
+          className="absolute -inset-2 bg-gradient-to-r from-gradient-start/30 via-gradient-mid/30 to-gradient-end/30 rounded-3xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+        />
+        
+        <div className="relative glass rounded-3xl overflow-hidden">
+          {/* Image Container */}
+          <div className="relative h-72 overflow-hidden">
+            <motion.img
+              src={product.image}
+              alt={product.name}
+              className="w-full h-full object-cover"
               whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.95 }}
-              className="p-2 rounded-full bg-secondary hover:bg-secondary/80 transition-colors"
-              aria-label="Quick view"
+              transition={{ duration: 0.6 }}
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            
+            {/* Quick Add Button with glow */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              className="absolute bottom-4 left-4 right-4 opacity-0 group-hover:opacity-100 transition-all duration-300"
             >
-              <ShoppingBag className="w-4 h-4" />
-            </motion.button>
+              <div className="relative">
+                <div className="absolute -inset-1 bg-gradient-to-r from-gradient-start via-gradient-mid to-gradient-end rounded-full opacity-70 blur-md" />
+                <Button className="relative w-full rounded-full bg-foreground text-background hover:bg-foreground gap-2 font-semibold">
+                  <ShoppingCart className="w-4 h-4" />
+                  Add to Cart
+                </Button>
+              </div>
+            </motion.div>
+
+            {/* Category Badge */}
+            <motion.span 
+              className="absolute top-4 left-4 px-3 py-1 text-xs font-medium glass rounded-full"
+              whileHover={{ scale: 1.05 }}
+            >
+              {product.category}
+            </motion.span>
+          </div>
+
+          {/* Content */}
+          <div className="p-6">
+            <div className="flex items-center gap-1 mb-2">
+              <Star className="w-4 h-4 fill-amber-400 text-amber-400" />
+              <span className="text-sm font-medium">{product.rating}</span>
+              <span className="text-sm text-muted-foreground">({product.reviews})</span>
+            </div>
+            <h3 className="text-lg font-semibold mb-2 line-clamp-1">{product.name}</h3>
+            <div className="flex items-center justify-between">
+              <span className="text-2xl font-bold gradient-text">${product.price}</span>
+              <motion.button
+                whileHover={{ scale: 1.15, rotate: 5 }}
+                whileTap={{ scale: 0.9 }}
+                className="p-2.5 glass rounded-full hover:bg-primary/10 transition-colors"
+                aria-label="Add to cart"
+              >
+                <ShoppingCart className="w-5 h-5" />
+              </motion.button>
+            </div>
           </div>
         </div>
       </motion.div>
@@ -141,57 +171,66 @@ export function ProductsSection() {
   const isInView = useInView(sectionRef, { once: true, margin: "-100px" })
 
   return (
-    <section id="products" ref={sectionRef} className="py-32 lg:py-40 overflow-hidden">
-      {/* Header */}
-      <div className="container mx-auto px-6 lg:px-12 mb-12">
-        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
-          <div className="max-w-xl">
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
+    <section id="products" ref={sectionRef} className="py-32 relative overflow-hidden">
+      {/* Background Elements */}
+      <div className="absolute top-0 right-0 w-1/2 h-1/2 bg-gradient-to-bl from-gradient-start/10 via-transparent to-transparent blur-3xl pointer-events-none" />
+      
+      <div className="container mx-auto px-6 mb-12">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.6 }}
+          className="flex flex-col md:flex-row md:items-end md:justify-between gap-6"
+        >
+          <div>
+            <motion.span
+              initial={{ opacity: 0, y: 10 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6 }}
-              className="text-sm font-medium tracking-wide text-muted-foreground mb-4"
+              transition={{ delay: 0.1 }}
+              className="text-sm uppercase tracking-widest text-muted-foreground"
             >
-              Featured
-            </motion.p>
+              Featured Products
+            </motion.span>
             <motion.h2
               initial={{ opacity: 0, y: 20 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ delay: 0.1, duration: 0.6 }}
-              className="text-4xl md:text-5xl lg:text-6xl font-semibold tracking-tight"
+              transition={{ delay: 0.2 }}
+              className="text-4xl md:text-5xl lg:text-6xl font-bold mt-4 text-balance"
             >
-              Bestselling <span className="gradient-text">Supplies</span>
+              Bestselling <span className="gradient-text">Art Supplies</span>
             </motion.h2>
           </div>
-          
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ delay: 0.2, duration: 0.6 }}
+            initial={{ opacity: 0, x: 20 }}
+            animate={isInView ? { opacity: 1, x: 0 } : {}}
+            transition={{ delay: 0.3 }}
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.97 }}
+            className="relative group"
           >
-            <Button 
-              variant="ghost" 
-              className="rounded-full px-6 gap-2 group"
-            >
-              View All
-              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+            <div className="absolute -inset-1 bg-gradient-to-r from-gradient-start via-gradient-mid to-gradient-end rounded-full opacity-0 group-hover:opacity-60 blur-lg transition-all duration-500" />
+            <Button variant="outline" className="relative rounded-full px-6 glass hover:bg-secondary/80">
+              View All Products
             </Button>
           </motion.div>
-        </div>
+        </motion.div>
       </div>
 
-      {/* Horizontal Scroll */}
+      {/* Horizontal Scroll Container */}
       <div className="relative">
-        <div className="flex gap-5 overflow-x-auto pb-4 px-6 lg:px-12 scrollbar-hide scroll-smooth">
+        <div className="flex gap-6 overflow-x-auto pb-6 px-6 scrollbar-hide snap-x snap-mandatory scroll-smooth">
+          <div className="flex-shrink-0 w-[calc((100vw-theme(spacing.6)*2-theme(spacing.6)*7)/8)] md:hidden" />
           {products.map((product, index) => (
-            <ProductCard key={product.id} product={product} index={index} />
+            <div key={product.id} className="snap-center">
+              <ProductCard product={product} index={index} />
+            </div>
           ))}
-          <div className="flex-shrink-0 w-6 lg:w-12" />
+          <div className="flex-shrink-0 w-6" />
         </div>
         
-        {/* Gradient Overlays */}
-        <div className="absolute left-0 top-0 bottom-4 w-12 lg:w-24 bg-gradient-to-r from-background to-transparent pointer-events-none" />
-        <div className="absolute right-0 top-0 bottom-4 w-12 lg:w-24 bg-gradient-to-l from-background to-transparent pointer-events-none" />
+        {/* Scroll Gradient Overlays */}
+        <div className="absolute left-0 top-0 bottom-6 w-20 bg-gradient-to-r from-background to-transparent pointer-events-none" />
+        <div className="absolute right-0 top-0 bottom-6 w-20 bg-gradient-to-l from-background to-transparent pointer-events-none" />
       </div>
     </section>
   )
