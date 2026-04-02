@@ -89,61 +89,76 @@ function ProductCard({
 }) {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
+      initial={{ opacity: 0, y: 50, scale: 0.9 }}
+      whileInView={{ opacity: 1, y: 0, scale: 1 }}
       viewport={{ once: true, margin: "-50px" }}
-      transition={{ duration: 0.5, delay: index * 0.1 }}
+      transition={{ duration: 0.6, delay: index * 0.1, ease: [0.23, 1, 0.32, 1] }}
       className="flex-shrink-0 w-72 md:w-80"
     >
       <motion.div
-        whileHover={{ y: -10 }}
-        className="group relative glass rounded-3xl overflow-hidden"
+        whileHover={{ y: -12, scale: 1.02 }}
+        transition={{ duration: 0.3, ease: "easeOut" }}
+        className="group relative"
       >
-        {/* Image Container */}
-        <div className="relative h-72 overflow-hidden">
-          <motion.img
-            src={product.image}
-            alt={product.name}
-            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-          
-          {/* Quick Add Button */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileHover={{ opacity: 1, y: 0 }}
-            className="absolute bottom-4 left-4 right-4 opacity-0 group-hover:opacity-100 transition-all duration-300"
-          >
-            <Button className="w-full rounded-full bg-foreground text-background hover:bg-foreground/90 gap-2">
-              <ShoppingCart className="w-4 h-4" />
-              Add to Cart
-            </Button>
-          </motion.div>
-
-          {/* Category Badge */}
-          <span className="absolute top-4 left-4 px-3 py-1 text-xs font-medium glass rounded-full">
-            {product.category}
-          </span>
-        </div>
-
-        {/* Content */}
-        <div className="p-6">
-          <div className="flex items-center gap-1 mb-2">
-            <Star className="w-4 h-4 fill-amber-400 text-amber-400" />
-            <span className="text-sm font-medium">{product.rating}</span>
-            <span className="text-sm text-muted-foreground">({product.reviews})</span>
-          </div>
-          <h3 className="text-lg font-semibold mb-2 line-clamp-1">{product.name}</h3>
-          <div className="flex items-center justify-between">
-            <span className="text-2xl font-bold gradient-text">${product.price}</span>
-            <motion.button
+        {/* Gradient glow on hover */}
+        <motion.div 
+          className="absolute -inset-2 bg-gradient-to-r from-gradient-start/30 via-gradient-mid/30 to-gradient-end/30 rounded-3xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+        />
+        
+        <div className="relative glass rounded-3xl overflow-hidden">
+          {/* Image Container */}
+          <div className="relative h-72 overflow-hidden">
+            <motion.img
+              src={product.image}
+              alt={product.name}
+              className="w-full h-full object-cover"
               whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-              className="p-2 glass rounded-full hover:bg-primary/10 transition-colors"
-              aria-label="Add to cart"
+              transition={{ duration: 0.6 }}
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            
+            {/* Quick Add Button with glow */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              className="absolute bottom-4 left-4 right-4 opacity-0 group-hover:opacity-100 transition-all duration-300"
             >
-              <ShoppingCart className="w-5 h-5" />
-            </motion.button>
+              <div className="relative">
+                <div className="absolute -inset-1 bg-gradient-to-r from-gradient-start via-gradient-mid to-gradient-end rounded-full opacity-70 blur-md" />
+                <Button className="relative w-full rounded-full bg-foreground text-background hover:bg-foreground gap-2 font-semibold">
+                  <ShoppingCart className="w-4 h-4" />
+                  Add to Cart
+                </Button>
+              </div>
+            </motion.div>
+
+            {/* Category Badge */}
+            <motion.span 
+              className="absolute top-4 left-4 px-3 py-1 text-xs font-medium glass rounded-full"
+              whileHover={{ scale: 1.05 }}
+            >
+              {product.category}
+            </motion.span>
+          </div>
+
+          {/* Content */}
+          <div className="p-6">
+            <div className="flex items-center gap-1 mb-2">
+              <Star className="w-4 h-4 fill-amber-400 text-amber-400" />
+              <span className="text-sm font-medium">{product.rating}</span>
+              <span className="text-sm text-muted-foreground">({product.reviews})</span>
+            </div>
+            <h3 className="text-lg font-semibold mb-2 line-clamp-1">{product.name}</h3>
+            <div className="flex items-center justify-between">
+              <span className="text-2xl font-bold gradient-text">${product.price}</span>
+              <motion.button
+                whileHover={{ scale: 1.15, rotate: 5 }}
+                whileTap={{ scale: 0.9 }}
+                className="p-2.5 glass rounded-full hover:bg-primary/10 transition-colors"
+                aria-label="Add to cart"
+              >
+                <ShoppingCart className="w-5 h-5" />
+              </motion.button>
+            </div>
           </div>
         </div>
       </motion.div>
@@ -189,8 +204,12 @@ export function ProductsSection() {
             initial={{ opacity: 0, x: 20 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
             transition={{ delay: 0.3 }}
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.97 }}
+            className="relative group"
           >
-            <Button variant="outline" className="rounded-full px-6 glass">
+            <div className="absolute -inset-1 bg-gradient-to-r from-gradient-start via-gradient-mid to-gradient-end rounded-full opacity-0 group-hover:opacity-60 blur-lg transition-all duration-500" />
+            <Button variant="outline" className="relative rounded-full px-6 glass hover:bg-secondary/80">
               View All Products
             </Button>
           </motion.div>

@@ -47,13 +47,16 @@ export function Footer() {
                 placeholder="Enter your email"
                 className="flex-1 px-6 py-4 rounded-full glass border-border bg-transparent focus:outline-none focus:ring-2 focus:ring-primary/50"
               />
-              <motion.button
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                className="px-8 py-4 rounded-full bg-foreground text-background font-medium hover:bg-foreground/90 transition-colors"
+              <motion.div
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
+                className="relative group"
               >
-                Subscribe
-              </motion.button>
+                <div className="absolute -inset-1 bg-gradient-to-r from-gradient-start via-gradient-mid to-gradient-end rounded-full opacity-0 group-hover:opacity-70 blur-lg transition-all duration-500" />
+                <button className="relative px-8 py-4 rounded-full bg-foreground text-background font-medium hover:bg-foreground transition-colors">
+                  Subscribe
+                </button>
+              </motion.div>
             </div>
           </div>
         </motion.div>

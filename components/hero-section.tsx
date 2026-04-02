@@ -1,6 +1,7 @@
 "use client"
 
-import { motion, useMotionValue, useSpring, useTransform } from "framer-motion"
+import { useState } from "react"
+import { motion } from "framer-motion"
 import { ArrowRight, Sparkles } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
@@ -18,47 +19,57 @@ function FloatingCard({
 }) {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 60, rotate: rotate - 10 }}
-      animate={{ opacity: 1, y: 0, rotate }}
-      transition={{ delay, duration: 1, ease: [0.23, 1, 0.32, 1] }}
+      initial={{ opacity: 0, y: 80, rotate: rotate - 15, scale: 0.8 }}
+      animate={{ opacity: 1, y: 0, rotate, scale: 1 }}
+      transition={{ delay, duration: 1.2, ease: [0.23, 1, 0.32, 1] }}
       className={className}
     >
       <motion.div
         animate={{
-          y: [0, -12, 0],
-          rotate: [rotate, rotate + 2, rotate],
+          y: [0, -15, 0],
+          rotate: [rotate, rotate + 3, rotate - 1, rotate],
+          scale: [1, 1.02, 0.98, 1],
         }}
         transition={{
-          duration: 5 + delay * 2,
+          duration: 6 + delay * 2,
           repeat: Infinity,
           ease: "easeInOut",
         }}
+        whileHover={{ 
+          scale: 1.05, 
+          rotate: rotate + 5,
+          transition: { duration: 0.3 }
+        }}
+        className="cursor-pointer"
       >
-        {children}
+        {/* Subtle glow on hover */}
+        <motion.div
+          className="absolute -inset-4 bg-gradient-to-r from-gradient-start/20 via-gradient-mid/20 to-gradient-end/20 rounded-3xl blur-xl opacity-0"
+          whileHover={{ opacity: 1 }}
+          transition={{ duration: 0.3 }}
+        />
+        <div className="relative">
+          {children}
+        </div>
       </motion.div>
     </motion.div>
   )
 }
 
 export function HeroSection() {
-  const mouseX = useMotionValue(0)
-  const mouseY = useMotionValue(0)
-
-  const springConfig = { damping: 30, stiffness: 200 }
-  const rotateX = useSpring(useTransform(mouseY, [-500, 500], [8, -8]), springConfig)
-  const rotateY = useSpring(useTransform(mouseX, [-500, 500], [-8, 8]), springConfig)
+  const [tilt, setTilt] = useState({ x: 0, y: 0 })
 
   const handleMouseMove = (e: React.MouseEvent) => {
     const rect = e.currentTarget.getBoundingClientRect()
     const centerX = rect.left + rect.width / 2
     const centerY = rect.top + rect.height / 2
-    mouseX.set(e.clientX - centerX)
-    mouseY.set(e.clientY - centerY)
+    const x = ((e.clientX - centerX) / (rect.width / 2)) * 5
+    const y = ((e.clientY - centerY) / (rect.height / 2)) * -5
+    setTilt({ x: y, y: x })
   }
 
   const handleMouseLeave = () => {
-    mouseX.set(0)
-    mouseY.set(0)
+    setTilt({ x: 0, y: 0 })
   }
 
   return (
@@ -110,7 +121,9 @@ export function HeroSection() {
           {/* Left Content */}
           <div className="order-2 lg:order-1">
             <motion.div
-              style={{ rotateX, rotateY, transformPerspective: 1200 }}
+              animate={{ rotateX: tilt.x, rotateY: tilt.y }}
+              transition={{ type: "spring", stiffness: 200, damping: 30 }}
+              style={{ transformPerspective: 1200 }}
               className="relative"
             >
               {/* Badge */}
@@ -154,10 +167,17 @@ export function HeroSection() {
                 transition={{ duration: 0.6, delay: 0.45 }}
                 className="flex flex-col sm:flex-row items-start gap-4"
               >
-                <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
+                {/* Primary Button with Gradient Glow */}
+                <motion.div 
+                  whileHover={{ scale: 1.03 }} 
+                  whileTap={{ scale: 0.97 }}
+                  className="relative group"
+                >
+                  {/* Gradient glow effect */}
+                  <div className="absolute -inset-1 bg-gradient-to-r from-gradient-start via-gradient-mid to-gradient-end rounded-full opacity-0 group-hover:opacity-70 blur-lg transition-all duration-500 group-hover:duration-200" />
                   <Button
                     size="lg"
-                    className="relative overflow-hidden group px-8 py-6 text-base font-semibold rounded-full bg-foreground text-background hover:bg-foreground/90 shadow-xl shadow-foreground/10"
+                    className="relative px-8 py-6 text-base font-semibold rounded-full bg-foreground text-background hover:bg-foreground shadow-xl shadow-foreground/10"
                   >
                     <span className="relative z-10 flex items-center gap-2">
                       Shop Collection
@@ -172,11 +192,18 @@ export function HeroSection() {
                   </Button>
                 </motion.div>
                 
-                <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
+                {/* Secondary Button with Gradient Glow */}
+                <motion.div 
+                  whileHover={{ scale: 1.03 }} 
+                  whileTap={{ scale: 0.97 }}
+                  className="relative group"
+                >
+                  {/* Gradient glow effect */}
+                  <div className="absolute -inset-1 bg-gradient-to-r from-gradient-start via-gradient-mid to-gradient-end rounded-full opacity-0 group-hover:opacity-50 blur-lg transition-all duration-500 group-hover:duration-200" />
                   <Button
                     variant="outline"
                     size="lg"
-                    className="px-8 py-6 text-base font-semibold rounded-full glass border-border/50 hover:bg-secondary/50 hover:border-border"
+                    className="relative px-8 py-6 text-base font-semibold rounded-full glass border-border/50 hover:bg-secondary/80 hover:border-transparent"
                   >
                     Explore Categories
                   </Button>
@@ -217,7 +244,7 @@ export function HeroSection() {
               rotate={-3}
             >
               <div className="glass-strong rounded-3xl p-2 shadow-2xl shadow-foreground/5">
-                <div className="relative w-[220px] sm:w-[280px] aspect-[3/4] rounded-2xl overflow-hidden bg-gradient-to-br from-gradient-start/10 to-gradient-mid/10">
+                <div className="relative w-[220px] h-[293px] sm:w-[280px] sm:h-[373px] rounded-2xl overflow-hidden bg-gradient-to-br from-gradient-start/10 to-gradient-mid/10">
                   <Image
                     src="https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=600&q=80"
                     alt="Premium watercolor set"
@@ -241,7 +268,7 @@ export function HeroSection() {
               rotate={6}
             >
               <div className="glass rounded-2xl p-2 shadow-xl">
-                <div className="relative w-[140px] sm:w-[160px] aspect-square rounded-xl overflow-hidden bg-gradient-to-br from-gradient-mid/10 to-gradient-end/10">
+                <div className="relative w-[140px] h-[140px] sm:w-[160px] sm:h-[160px] rounded-xl overflow-hidden bg-gradient-to-br from-gradient-mid/10 to-gradient-end/10">
                   <Image
                     src="https://images.unsplash.com/photo-1596484552834-6a58f850e0a1?w=400&q=80"
                     alt="Premium brushes"
@@ -264,7 +291,7 @@ export function HeroSection() {
               rotate={-8}
             >
               <div className="glass rounded-2xl p-2 shadow-xl">
-                <div className="relative w-[130px] sm:w-[150px] aspect-[4/5] rounded-xl overflow-hidden bg-gradient-to-br from-gradient-end/10 to-gradient-start/10">
+                <div className="relative w-[130px] h-[162px] sm:w-[150px] sm:h-[187px] rounded-xl overflow-hidden bg-gradient-to-br from-gradient-end/10 to-gradient-start/10">
                   <Image
                     src="https://images.unsplash.com/photo-1452860606245-08befc0ff44b?w=400&q=80"
                     alt="Sketch pencils"

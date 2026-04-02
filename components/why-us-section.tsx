@@ -46,32 +46,46 @@ function FeatureCard({
 }) {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 40 }}
-      whileInView={{ opacity: 1, y: 0 }}
+      initial={{ opacity: 0, y: 60, scale: 0.9 }}
+      whileInView={{ opacity: 1, y: 0, scale: 1 }}
       viewport={{ once: true, margin: "-50px" }}
-      transition={{ duration: 0.5, delay: index * 0.1 }}
+      transition={{ duration: 0.6, delay: index * 0.12, ease: [0.23, 1, 0.32, 1] }}
       className="group"
     >
       <motion.div
-        whileHover={{ y: -5 }}
+        whileHover={{ y: -8, scale: 1.02 }}
+        transition={{ duration: 0.3, ease: "easeOut" }}
         className="relative h-full"
       >
-        <div className="glass rounded-3xl p-8 h-full relative overflow-hidden transition-all duration-300 group-hover:shadow-xl group-hover:shadow-primary/5">
+        {/* Gradient glow on hover */}
+        <motion.div 
+          className="absolute -inset-2 bg-gradient-to-r from-gradient-start/25 via-gradient-mid/25 to-gradient-end/25 rounded-3xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+        />
+        
+        <div className="relative glass rounded-3xl p-8 h-full overflow-hidden transition-all duration-300">
           {/* Animated Icon */}
           <motion.div
-            initial={{ scale: 1 }}
-            whileHover={{ scale: 1.1, rotate: 5 }}
+            whileHover={{ scale: 1.15, rotate: 10 }}
             transition={{ type: "spring", stiffness: 300 }}
-            className="w-14 h-14 rounded-2xl bg-gradient-to-br from-gradient-start/20 to-gradient-mid/20 flex items-center justify-center mb-6"
+            className="w-14 h-14 rounded-2xl bg-gradient-to-br from-gradient-start/20 to-gradient-mid/20 flex items-center justify-center mb-6 relative"
           >
-            <feature.icon className="w-7 h-7 text-primary" />
+            <motion.div
+              className="absolute inset-0 rounded-2xl bg-gradient-to-br from-gradient-start to-gradient-mid opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+            />
+            <feature.icon className="w-7 h-7 text-primary relative z-10 group-hover:text-primary-foreground transition-colors duration-300" />
           </motion.div>
 
-          <h3 className="text-xl font-bold mb-3">{feature.title}</h3>
+          <motion.h3 
+            className="text-xl font-bold mb-3"
+            whileHover={{ x: 4 }}
+            transition={{ duration: 0.2 }}
+          >
+            {feature.title}
+          </motion.h3>
           <p className="text-muted-foreground leading-relaxed">{feature.description}</p>
 
           {/* Hover Gradient */}
-          <div className="absolute inset-0 bg-gradient-to-br from-gradient-start/5 via-transparent to-gradient-end/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl" />
+          <div className="absolute inset-0 bg-gradient-to-br from-gradient-start/5 via-transparent to-gradient-end/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl pointer-events-none" />
         </div>
       </motion.div>
     </motion.div>
